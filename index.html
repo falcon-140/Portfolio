@@ -8,469 +8,94 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --border: #1e1e1e;
-    --border-light: #2a2a2a;
-    --text: #f0ede8;
-    --muted: #6b6b6b;
-    --accent: #c8f542;
-    --accent2: #f5a623;
-    --accent3: #42c8f5;
-    --red: #f54242;
+    --bg: #0a0a0a; --surface: #111111; --border: #1e1e1e; --border-light: #2a2a2a;
+    --text: #f0ede8; --muted: #6b6b6b; --accent: #c8f542; --accent2: #f5a623;
   }
-
   html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    line-height: 1.7;
-    overflow-x: hidden;
-    cursor: none;
-  }
-
-  /* custom cursor */
-  .cursor {
-    width: 10px; height: 10px;
-    background: var(--accent);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.15s ease;
-    mix-blend-mode: difference;
-  }
-  .cursor-ring {
-    width: 36px; height: 36px;
-    border: 1px solid var(--accent);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none;
-    z-index: 9998;
-    transition: transform 0.08s ease, width 0.2s, height 0.2s, opacity 0.2s;
-    opacity: 0.5;
-  }
-
-  /* nav */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.25rem 2.5rem;
-    border-bottom: 1px solid var(--border);
-    background: rgba(10,10,10,0.85);
-    backdrop-filter: blur(12px);
-  }
-  .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 15px;
-    letter-spacing: 0.05em;
-    color: var(--accent);
-    text-decoration: none;
-  }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Mono', monospace; font-size: 14px; line-height: 1.7; overflow-x: hidden; cursor: none; }
+  .cursor { width: 10px; height: 10px; background: var(--accent); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; mix-blend-mode: difference; }
+  .cursor-ring { width: 36px; height: 36px; border: 1px solid var(--accent); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transition: transform 0.08s ease, width 0.2s, height 0.2s, opacity 0.2s; opacity: 0.5; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 2.5rem; border-bottom: 1px solid var(--border); background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: 0.05em; color: var(--accent); text-decoration: none; }
   .nav-links { display: flex; gap: 2rem; list-style: none; }
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
   .nav-links a:hover { color: var(--text); }
-  .nav-cta {
-    background: var(--accent);
-    color: #0a0a0a;
-    padding: 0.4rem 1rem;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 12px;
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    transition: opacity 0.2s;
-  }
+  .nav-cta { background: var(--accent); color: #0a0a0a; padding: 0.4rem 1rem; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; text-decoration: none; letter-spacing: 0.05em; transition: opacity 0.2s; }
   .nav-cta:hover { opacity: 0.85; }
-
-  /* hero */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding-top: 72px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -200px; right: -200px;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(200,245,66,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-left {
-    padding: 5rem 2.5rem 4rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-right: 1px solid var(--border);
-    position: relative;
-  }
-  .hero-tag {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1.5rem;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .hero-tag::before {
-    content: '';
-    display: inline-block;
-    width: 24px; height: 1px;
-    background: var(--accent);
-  }
-  h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(3rem, 6vw, 5.5rem);
-    font-weight: 800;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    margin-bottom: 1.5rem;
-  }
-  h1 em {
-    font-family: 'Instrument Serif', serif;
-    font-style: italic;
-    color: var(--accent);
-    font-weight: 400;
-  }
-  .hero-desc {
-    font-size: 14px;
-    color: var(--muted);
-    max-width: 380px;
-    line-height: 1.8;
-    margin-bottom: 2.5rem;
-  }
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; padding-top: 72px; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(200,245,66,0.06) 0%, transparent 70%); pointer-events: none; }
+  .hero-left { padding: 5rem 2.5rem 4rem; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); }
+  .hero-tag { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px; }
+  .hero-tag::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent); }
+  h1 { font-family: 'Syne', sans-serif; font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
+  h1 em { font-family: 'Instrument Serif', serif; font-style: italic; color: var(--accent); font-weight: 400; }
+  .hero-desc { font-size: 14px; color: var(--muted); max-width: 380px; line-height: 1.8; margin-bottom: 2.5rem; }
   .hero-desc strong { color: var(--text); font-weight: 400; }
   .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .btn-primary {
-    background: var(--accent);
-    color: #0a0a0a;
-    padding: 0.75rem 1.75rem;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: inline-block;
-  }
+  .btn-primary { background: var(--accent); color: #0a0a0a; padding: 0.75rem 1.75rem; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; text-decoration: none; letter-spacing: 0.05em; transition: transform 0.2s, box-shadow 0.2s; display: inline-block; }
   .btn-primary:hover { transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--accent2); }
-  .btn-ghost {
-    border: 1px solid var(--border-light);
-    color: var(--muted);
-    padding: 0.75rem 1.75rem;
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 13px;
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    transition: border-color 0.2s, color 0.2s;
-    display: inline-block;
-  }
+  .btn-ghost { border: 1px solid var(--border-light); color: var(--muted); padding: 0.75rem 1.75rem; font-family: 'Syne', sans-serif; font-weight: 600; font-size: 13px; text-decoration: none; letter-spacing: 0.05em; transition: border-color 0.2s, color 0.2s; display: inline-block; }
   .btn-ghost:hover { border-color: var(--text); color: var(--text); }
-  .hero-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 4rem 2.5rem;
-    position: relative;
-  }
-  .photo-frame {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 260px; height: 320px;
-  }
-  .photo-frame img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    object-position: top;
-    filter: grayscale(20%) contrast(1.05);
-    display: block;
-  }
-  .photo-frame::before {
-    content: '';
-    position: absolute;
-    inset: -8px;
-    border: 1px solid var(--accent);
-    z-index: -1;
-    transform: translate(6px, 6px);
-  }
-  .photo-frame::after {
-    content: 'BUILDER';
-    position: absolute;
-    bottom: -1px; right: -1px;
-    background: var(--accent);
-    color: #0a0a0a;
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    padding: 4px 10px;
-  }
-  .hero-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    margin-top: 2rem;
-  }
-  .stat {
-    background: var(--bg);
-    padding: 1.25rem 1rem;
-    text-align: center;
-  }
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--accent);
-    display: block;
-  }
+  .hero-right { display: flex; flex-direction: column; justify-content: flex-end; padding: 4rem 2.5rem; position: relative; }
+  .photo-frame { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 260px; height: 320px; }
+  .photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top; filter: grayscale(20%) contrast(1.05); display: block; }
+  .photo-frame::before { content: ''; position: absolute; inset: -8px; border: 1px solid var(--accent); z-index: -1; transform: translate(6px, 6px); }
+  .photo-frame::after { content: 'BUILDER'; position: absolute; bottom: -1px; right: -1px; background: var(--accent); color: #0a0a0a; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 0.15em; padding: 4px 10px; }
+  .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 2rem; }
+  .stat { background: var(--bg); padding: 1.25rem 1rem; text-align: center; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--accent); display: block; }
   .stat-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-
-  /* scroll ticker */
-  .ticker {
-    background: var(--accent);
-    color: #0a0a0a;
-    padding: 0.6rem 0;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  .ticker-inner {
-    display: inline-flex;
-    animation: ticker 20s linear infinite;
-  }
-  .ticker-inner span {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0 2rem;
-  }
-  .ticker-inner span::after {
-    content: '✦';
-    margin-left: 2rem;
-  }
-  @keyframes ticker {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* sections */
+  .ticker { background: var(--accent); color: #0a0a0a; padding: 0.6rem 0; overflow: hidden; white-space: nowrap; }
+  .ticker-inner { display: inline-flex; animation: ticker 20s linear infinite; }
+  .ticker-inner span { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 0 2rem; }
+  .ticker-inner span::after { content: '✦'; margin-left: 2rem; }
+  @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   section { padding: 5rem 2.5rem; border-bottom: 1px solid var(--border); }
-  .section-header {
-    display: flex; align-items: baseline; gap: 1rem;
-    margin-bottom: 3rem;
-  }
-  .section-num {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    color: var(--accent);
-    text-transform: uppercase;
-  }
-  h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-  }
-  h2 em {
-    font-family: 'Instrument Serif', serif;
-    font-style: italic;
-    font-weight: 400;
-    color: var(--muted);
-  }
-
-  /* projects */
+  .section-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 3rem; }
+  .section-num { font-size: 11px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; }
+  h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.02em; }
+  h2 em { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; color: var(--muted); }
   .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .project-card {
-    background: var(--bg);
-    padding: 2rem;
-    position: relative;
-    transition: background 0.3s;
-    overflow: hidden;
-  }
+  .project-card { background: var(--bg); padding: 2rem; position: relative; transition: background 0.3s; overflow: hidden; cursor: pointer; }
   .project-card:hover { background: var(--surface); }
   .project-card:hover .project-arrow { opacity: 1; transform: translate(0,0); }
-  .project-num {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-  }
-  .project-name {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 800;
-    margin-bottom: 0.75rem;
-    letter-spacing: -0.02em;
-  }
-  .project-tagline {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-  }
-  .project-story {
-    font-size: 12px;
-    color: var(--muted);
-    font-style: italic;
-    border-left: 2px solid var(--accent);
-    padding-left: 1rem;
-    margin-bottom: 1.5rem;
-    line-height: 1.7;
-  }
+  .project-num { font-size: 10px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-bottom: 1rem; }
+  .project-name { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
+  .project-tagline { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+  .project-story { font-size: 12px; color: var(--muted); font-style: italic; border-left: 2px solid var(--accent); padding-left: 1rem; margin-bottom: 1.5rem; line-height: 1.7; }
   .tech-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-  .tag {
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border: 1px solid var(--border-light);
-    color: var(--muted);
-    padding: 3px 8px;
-  }
+  .tag { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid var(--border-light); color: var(--muted); padding: 3px 8px; }
   .tag.accent { border-color: var(--accent); color: var(--accent); }
-  .project-arrow {
-    position: absolute;
-    top: 1.5rem; right: 1.5rem;
-    font-size: 1.2rem;
-    opacity: 0;
-    transform: translate(-4px, 4px);
-    transition: all 0.25s ease;
-    color: var(--accent);
-  }
-  .project-badge {
-    position: absolute;
-    top: 0; right: 0;
-    background: var(--accent);
-    color: #0a0a0a;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 3px 8px;
-  }
+  .project-arrow { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 1.2rem; opacity: 0; transform: translate(-4px, 4px); transition: all 0.25s ease; color: var(--accent); }
+  .project-badge { position: absolute; top: 0; right: 0; background: var(--accent); color: #0a0a0a; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; }
   .project-card.featured { grid-column: span 2; }
   .project-card.featured .project-name { font-size: 2rem; }
-
-  /* stack */
   .stack-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .stack-item {
-    background: var(--bg);
-    padding: 1.5rem 1.75rem;
-    transition: background 0.2s;
-  }
+  .stack-item { background: var(--bg); padding: 1.5rem 1.75rem; transition: background 0.2s; }
   .stack-item:hover { background: var(--surface); }
-  .stack-category {
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.75rem;
-  }
-  .stack-langs {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: var(--text);
-  }
+  .stack-category { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .stack-langs { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; line-height: 1.5; color: var(--text); }
   .stack-sub { font-size: 12px; color: var(--muted); margin-top: 0.4rem; }
-
-  /* about */
   .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
   .about-text p { color: var(--muted); line-height: 1.9; margin-bottom: 1rem; font-size: 14px; }
   .about-text p strong { color: var(--text); font-weight: 400; }
-  .about-highlight {
-    font-family: 'Instrument Serif', serif;
-    font-style: italic;
-    font-size: 1.6rem;
-    line-height: 1.4;
-    color: var(--text);
-    border-left: 3px solid var(--accent);
-    padding-left: 1.5rem;
-    margin: 2rem 0;
-  }
+  .about-highlight { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 1.6rem; line-height: 1.4; color: var(--text); border-left: 3px solid var(--accent); padding-left: 1.5rem; margin: 2rem 0; }
   .about-links { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .about-link {
-    background: var(--bg);
-    padding: 1.25rem 1.5rem;
-    display: flex; align-items: center; justify-content: space-between;
-    text-decoration: none;
-    color: var(--text);
-    transition: background 0.2s;
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 0.03em;
-  }
+  .about-link { background: var(--bg); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: var(--text); transition: background 0.2s; font-family: 'Syne', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.03em; }
   .about-link:hover { background: var(--surface); }
   .about-link span { color: var(--muted); font-size: 11px; }
-
-  /* contact */
-  .contact-inner {
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
-  }
+  .contact-inner { max-width: 600px; margin: 0 auto; text-align: center; }
   .contact-inner h2 { margin-bottom: 1rem; }
   .contact-inner p { color: var(--muted); margin-bottom: 2.5rem; }
-  .contact-email {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(1.2rem, 3vw, 2rem);
-    font-weight: 800;
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 2px solid var(--accent);
-    padding-bottom: 4px;
-    transition: opacity 0.2s;
-    display: inline-block;
-    margin-bottom: 2rem;
-  }
+  .contact-email { font-family: 'Syne', sans-serif; font-size: clamp(1.2rem, 3vw, 2rem); font-weight: 800; color: var(--accent); text-decoration: none; border-bottom: 2px solid var(--accent); padding-bottom: 4px; transition: opacity 0.2s; display: inline-block; margin-bottom: 2rem; }
   .contact-email:hover { opacity: 0.7; }
-
-  /* footer */
-  footer {
-    padding: 2rem 2.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  footer { padding: 2rem 2.5rem; display: flex; justify-content: space-between; align-items: center; }
   footer p { font-size: 11px; color: var(--muted); }
   footer a { color: var(--muted); text-decoration: none; }
   footer a:hover { color: var(--accent); }
-
-  /* animations */
-  .fade-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .fade-up.visible { opacity: 1; transform: translateY(0); }
-
   @media (max-width: 768px) {
     .hero { grid-template-columns: 1fr; }
     .hero-right { display: none; }
@@ -516,21 +141,12 @@
   </div>
   <div class="hero-right">
     <div class="photo-frame">
-      <img src="./linkedin_profile_pic.jpeg" alt="Laksh Agarwal" id="heroPhoto">
+      <img src="./linkedin_profile_pic.jpeg" alt="Laksh Agarwal">
     </div>
     <div class="hero-stats">
-      <div class="stat">
-        <span class="stat-num">24+</span>
-        <span class="stat-label">Projects</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">3+</span>
-        <span class="stat-label">Languages</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">1</span>
-        <span class="stat-label">Hackathon</span>
-      </div>
+      <div class="stat"><span class="stat-num">24+</span><span class="stat-label">Projects</span></div>
+      <div class="stat"><span class="stat-num">3+</span><span class="stat-label">Languages</span></div>
+      <div class="stat"><span class="stat-num">1</span><span class="stat-label">Hackathon</span></div>
     </div>
   </div>
 </section>
@@ -547,16 +163,15 @@
     <span class="section-num">01 — Work</span>
     <h2>Things I've <em>shipped</em></h2>
   </div>
-
   <div class="projects-grid">
 
-    <div class="project-card featured fade-up">
+    <!-- CARD 1: AquaCalm AI — featured, spans full width -->
+    <div class="project-card featured fade-up" onclick="window.open('https://github.com/falcon-140/Aquacalm-AI','_blank')">
       <div class="project-badge">Featured</div>
       <div class="project-num">01 / AquaCalm AI</div>
       <div class="project-name">AquaCalm AI — Psychotherapist GPT</div>
       <p class="project-tagline">An AI-powered mental health companion that listens, responds, and speaks — built for people who need someone to talk to but have no one around.</p>
       <p class="project-story">"I built this because I deal with anxiety myself, and mental health support in India is hard to access. I also shipped it for Cal Hacks 12.0."</p>
-      <div class="project-card fade-up" onclick="window.open('https://github.com/falcon-140/Aquacalm-AI')"></div>
       <div class="tech-tags">
         <span class="tag accent">Python</span>
         <span class="tag accent">React</span>
@@ -568,12 +183,12 @@
       <div class="project-arrow">↗</div>
     </div>
 
-    <div class="project-card fade-up">
+    <!-- CARD 2: BSR -->
+    <div class="project-card fade-up" onclick="window.open('https://github.com/falcon-140/BSR','_blank')">
       <div class="project-num">02 / BSR</div>
       <div class="project-name">BSR — Business Suite</div>
       <p class="project-tagline">A complete accounting and billing system — daily, monthly, yearly sales tracking, invoicing, credit balances, and full business reporting.</p>
       <p class="project-story">"Built this so my father's business could stop relying on manual records. It replaced spreadsheets entirely."</p>
-      <div class="project-card fade-up" onclick="window.open('https://github.com/falcon-140/BSR')"></div>
       <div class="tech-tags">
         <span class="tag accent">TypeScript</span>
         <span class="tag accent">MySQL</span>
@@ -583,12 +198,12 @@
       <div class="project-arrow">↗</div>
     </div>
 
-    <div class="project-card fade-up">
+    <!-- CARD 3: E-commerce -->
+    <div class="project-card fade-up" onclick="window.open('https://github.com/falcon-140/EcommerceApp','_blank')">
       <div class="project-num">03 / E-commerce Platform</div>
       <div class="project-name">Family Business Store</div>
       <p class="project-tagline">A full-stack e-commerce application — product listings, cart, checkout, and order management — built so my father's business didn't have to pay third-party platform fees.</p>
       <p class="project-story">"Why pay Shopify when you can build it? My father needed a store, I built one."</p>
-      <div class="project-card fade-up" onclick="window.open('https://github.com/falcon-140/EcommerceApp')"></div>
       <div class="tech-tags">
         <span class="tag accent">C# / ASP.NET</span>
         <span class="tag accent">Flask</span>
@@ -596,12 +211,12 @@
       <div class="project-arrow">↗</div>
     </div>
 
-    <div class="project-card fade-up">
+    <!-- CARD 4: n8n Job Automation -->
+    <div class="project-card fade-up" onclick="window.open('https://github.com/falcon-140/n8n-job-automation','_blank')">
       <div class="project-num">04 / n8n Job Automation</div>
       <div class="project-name">LinkedIn Job Radar</div>
       <p class="project-tagline">An automated pipeline that surfaces LinkedIn jobs posted by HR in the last 24 hours — so you never miss a fresh listing while everyone else is looking at week-old posts.</p>
       <p class="project-story">"Built this to solve my own job search problem. If you need to apply, you want the freshest listings."</p>
-      <div class="project-card fade-up" onclick="window.open('https://github.com/falcon-140/n8n-job-automation')">
       <div class="tech-tags">
         <span class="tag accent">n8n</span>
         <span class="tag">Supabase</span>
@@ -620,7 +235,6 @@
     <span class="section-num">02 — Stack</span>
     <h2>What I <em>work with</em></h2>
   </div>
-
   <div class="stack-grid">
     <div class="stack-item fade-up">
       <div class="stack-category">Languages</div>
@@ -669,15 +283,9 @@
     </div>
     <div>
       <div class="about-links">
-        <a href="https://github.com/falcon-140" target="_blank" class="about-link">
-          GitHub — falcon-140 <span>↗</span>
-        </a>
-        <a href="https://linkedin.com/in/laksh1agarwal" target="_blank" class="about-link">
-          LinkedIn — laksh1agarwal <span>↗</span>
-        </a>
-        <a href="#contact" class="about-link">
-          Email me directly <span>↓</span>
-        </a>
+        <a href="https://github.com/falcon-140" target="_blank" class="about-link">GitHub — falcon-140 <span>↗</span></a>
+        <a href="https://linkedin.com/in/laksh1agarwal" target="_blank" class="about-link">LinkedIn — laksh1agarwal <span>↗</span></a>
+        <a href="#contact" class="about-link">Email me directly <span>↓</span></a>
         <div class="about-link" style="cursor:default;">
           <span style="color:var(--muted);font-size:12px;">Status</span>
           <span style="color:var(--accent);font-family:'Syne',sans-serif;font-weight:700;font-size:12px;">● Open to opportunities</span>
@@ -692,9 +300,9 @@
     <div class="section-num" style="margin-bottom:1rem;">04 — Contact</div>
     <h2>Let's build<br><em>something real</em></h2>
     <p>Got a problem worth solving? I'm interested. Whether it's a job, a project, or just a conversation — reach out.</p>
-    <a href="mailto:lakshagarwal0710@example.com" class="contact-email">laksh1agarwal@linkedin →</a>
+    <a href="mailto:lakshagarwal0710@gmail.com" class="contact-email">lakshagarwal0710@gmail.com →</a>
     <br>
-    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1rem;">
       <a href="https://github.com/falcon-140" target="_blank" class="btn-primary">GitHub</a>
       <a href="https://linkedin.com/in/laksh1agarwal" target="_blank" class="btn-ghost">LinkedIn</a>
     </div>
@@ -707,7 +315,6 @@
 </footer>
 
 <script>
-  // cursor
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
   let mx = 0, my = 0, rx = 0, ry = 0;
@@ -720,27 +327,17 @@
     requestAnimationFrame(animCursor);
   }
   animCursor();
-  document.querySelectorAll('a,button').forEach(el => {
-    el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; ring.style.opacity = '0.3'; });
-    el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.opacity = '0.5'; });
+  document.querySelectorAll('a,button,.project-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width='60px'; ring.style.height='60px'; ring.style.opacity='0.3'; });
+    el.addEventListener('mouseleave', () => { ring.style.width='36px'; ring.style.height='36px'; ring.style.opacity='0.5'; });
   });
-
-  // fade up on scroll
   const faders = document.querySelectorAll('.fade-up');
   const obs = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 80);
-        obs.unobserve(e.target);
-      }
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); obs.unobserve(e.target); }
     });
   }, { threshold: 0.1 });
   faders.forEach(f => obs.observe(f));
-
-  // try to load the actual photo
-  const img = document.getElementById('heroPhoto');
-  // since this is a local file, we embed it as base64 placeholder note
-  // The user should replace the src with their actual hosted image URL
 </script>
 </body>
 </html>
